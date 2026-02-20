@@ -1,0 +1,29 @@
+name: CI with Cache
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Cache Dependencies
+        id: cache-step
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: cache-a60be4c
+          restore-keys: |
+            cache-a60be4c
+
+      - name: prime-cache-a60be4c
+        run: echo "Cache hit? ${{ steps.cache-step.outputs.cache-hit }}"
+
+      - name: Install Dependencies
+        run: pip install requests
